@@ -200,9 +200,11 @@ The application generates:
 ## ⚙ Installation
 
 ```bash
-git clone https://github.com/yourusername/data-cluster-visualizer.git
+git clone https://github.com/Leonhard-Hopeful/pca-for-visualization.git
 
-cd data-cluster-visualizer
+cd pca-for-visualization
+
+python3 -m venv venv && source venv/Scripts/activate
 
 pip install -r requirements.txt
 

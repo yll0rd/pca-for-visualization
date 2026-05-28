@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 from data_pipeline.cleaner import DataCleaner
 from engine.pca_via_svd import SVDPCA
-# from engine.clustering import KMeansClusterer # Assume implemented similar to PCA
 from visualizations.plot_manager import VizManager
+from sklearn.cluster import KMeans
 import json
 
 # --- Page Config ---
@@ -84,7 +84,7 @@ if st.session_state['raw_data'] is not None:
             st.info("""
             **Why is this mathematically robust?** 
             Instead of computing the covariance matrix, our engine factored the centered data matrix directly:
-            $X = U\Sigma V^T$. 
+            $X = U\\Sigma V^T$. 
             This prevents catastrophic loss of precision. The components shown above correspond to the right singular vectors ($V$).
             """)
 
@@ -94,11 +94,11 @@ if st.session_state['raw_data'] is not None:
                 st.warning("You selected >3 components. The visualizations below default to the first 3 components (highest variance), but your exported data will contain all calculated components.")
             
             # Clustering Bonus
+            plot_targets = targets if targets is not None else None
             run_clustering = st.checkbox("Apply K-Means Clustering on PCA Space")
-            plot_targets = targets
             if run_clustering:
                 n_clusters = st.slider("Number of Clusters (k)", 2, 10, 3)
-                kmeans = KMeansClusterer(n_clusters=n_clusters)
+                kmeans = KMeans(n_clusters=n_clusters)
                 plot_targets = kmeans.fit_predict(pca_transformed)
 
             viz_dims = min(n_components, 3)
